@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: defn.ly
+  namespace: default
   labels:
     app: defn.ly
 spec:
@@ -28,6 +29,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: defn-ly
+  namespace: default
 spec:
   type: LoadBalancer
   selector:
