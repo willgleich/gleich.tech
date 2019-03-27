@@ -34,6 +34,7 @@ spec:
   }
       steps {
         script {
+         container('docker-build'){
           // Change deployed image in canary to the one we just built
           def app
           checkout scm
@@ -41,6 +42,7 @@ spec:
           docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
+            }
         }
       }
     }
