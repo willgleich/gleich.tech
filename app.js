@@ -18,7 +18,7 @@ app.get('/random', function(req, res){
     res.send(String(num))
 });
 
-app.get('/', function(req, res){
+app.get('/index', function(req, res){
     res.render('index')
 })
 

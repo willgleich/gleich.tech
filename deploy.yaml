@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        app: app
+        app: defn-ly
     spec:
       containers:
         - name: node
@@ -31,8 +31,8 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: defn.ly
+    app: defn-ly
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 8080
