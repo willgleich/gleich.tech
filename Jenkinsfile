@@ -1,7 +1,37 @@
 pipeline {
-  agent any
+  agent none
   stages {
-      stage('Build Image') {
+      stage('Build and Push Image') {
+    agent {
+    kubernetes {
+      label 'docker-build'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+  serviceAccountName: jenkins
+  containers:
+  - name: docker-build
+    image: docker:18.06-dind
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: dockersock
+      mountPath: "/var/run/docker.sock"
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
+  securityContext:
+    privileged: true
+"""
+  }
+  }
       steps {
         script {
           // Change deployed image in canary to the one we just built
@@ -43,7 +73,6 @@ spec:
         script{
         checkout scm
         }
-          // Change deployed image in canary to the one we just built
           sh("kubectl delete -f deploy.yaml")
           sh("kubectl apply -f deploy.yaml")
         }
