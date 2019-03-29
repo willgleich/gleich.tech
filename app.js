@@ -23,6 +23,12 @@ app.get('/index', function(req, res){
 })
 
 
+app.get('/blog', function(req, res){
+    var data = {title: "Hello World", body:"First Blog Post"};
+    res.render('blog', {data:data});
+})
+
+
 
 app.listen(8080, function() {
     console.log('App listening on port 8080!');
