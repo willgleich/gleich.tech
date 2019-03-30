@@ -75,8 +75,48 @@ spec:
         script{
         checkout scm
         }
-          sh("kubectl delete -f deploy.yaml")
-          sh("kubectl apply -f deploy.yaml")
+sh("""cat <<'EOF' | kubectl apply -f -
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: defn.ly
+  namespace: default
+  labels:
+    app: defn.ly
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: defn-ly
+    spec:
+      containers:
+        - name: node
+          image: wgleich/defn-ly:${env.BUILD_ID}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: defn-ly
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: defn-ly
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080""")
+
         }
       }
     }
