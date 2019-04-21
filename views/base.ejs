@@ -1,67 +1,52 @@
-<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
 <link rel="stylesheet" href="bootstrap.min.css" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<style>
-    body { padding-top: 50px; }
 
-    .navbar {
-        height: 50px;
-    }
+<style>
+    /*body { padding-top: 50px; }*/
+
+    /*.navbar {*/
+    /*    height: 50px;*/
+    /*}*/
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-
-    <a class="navbar-brand" href="/index">    <img class="img-responsive" height=30px src="term_icon.png" > defn.ly </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto nav-fill">
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="/index">Home<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-            <li class="nav-item">
-                <a class="nav-link" href="/blog">Blog<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/resume">Resume<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/aboutme">About Me<span class="sr-only">(current)</span></a>
-            </li>
-<!--            <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                    Dropdown-->
-<!--                </a>-->
-<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                    <a class="dropdown-item" href="#">Action</a>-->
-<!--                    <a class="dropdown-item" href="#">Another action</a>-->
-<!--                    <div class="dropdown-divider"></div>-->
-<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
-<!--                </div>-->
-<!--            </li>-->
-        </ul>
-
-<!--        <a class="navbar-brand" href="#">defn.ly &#45;&#45; Will Gleich</a>-->
-
-    </div>
-
-    <div class="navbar-collapse collapse order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="https://gitlab.com/wgleich"><img height=33px src = "In-Black-128px-R.png"></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://www.linkedin.com/in/williamgleich/"><img height=35px src = "gitlab-icon-rgb.png"></a>
-            </li>
-        </ul>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!--    <div class="container">-->
+        <div class="navbar-header">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mymenu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="sr-only">toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="/index"> <img class="img-responsive navbar-brand" height=50px src="term_icon.png" > defn.ly </a>
+        </div>
+        <div class="ml-lg-5 order-lg-last order-0">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link navbar-brand" href="https://www.linkedin.com/in/williamgleich/"><img height=33px src = "In-Black-128px-R.png"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link navbar-brand" href="https://gitlab.com/wgleich"><img height=35px src = "gitlab-icon-rgb.png"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="mymenu">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/blog">Blog<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/resume">Resume<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/aboutme">About Me<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+<!--            <form class="form-inline my-2 my-lg-0 position-relative">-->
+<!--                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>-->
+<!--            </form>-->
+        </div>
+<!--    </div>-->
 </nav>
 
-
-<script>
-    $('a[href="' + this.location.pathname + '"]').parents('li,ul').addClass('active');
-</script>
