@@ -19,8 +19,8 @@ app.get('/index', function(req, res){
 
 
 app.get('/blog', function(req, res){
-    var data = {title: "Hello World", body:"First Blog Post"};
-    res.render('blog', {data:data});
+    var data1 = {title: "Coming soon to a browser near you...", body:"First Blog Post"};
+    res.render('blog', {data:data1});
 });
 
 app.get('/resume', function(req, res){
