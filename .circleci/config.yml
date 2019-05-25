@@ -15,4 +15,4 @@ jobs:
       - run: echo "A first hello"
       - run:
           name: Build Docker image
-          command: docker push -t wgleich/defn-ly:circleci .
+          command: docker push wgleich/defn-ly:circleci
