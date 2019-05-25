@@ -8,8 +8,8 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Docker image
-          command: docker build -t wgleich/defnly:circleci .
+          command: docker build -t wgleich/defn-ly:circleci .
       - run: echo "A first hello"
       - run:
           name: Build Docker image
-          command: docker push -t wgleich:circleci .
+          command: docker push -t wgleich/defn-ly:circleci .
