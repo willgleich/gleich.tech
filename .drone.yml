@@ -1,0 +1,61 @@
+---
+kind: pipeline
+type: kubernetes
+name: default
+
+globals:
+  - &docker_cred
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+steps:
+  - name: Build_Docker_Image # building the API docker image
+    image: plugins/docker
+    settings:
+      repo: wgleich/resume
+      <<: *docker_cred
+      # registry: hub.docker.com
+      # dockerfile: /drone/src/.
+      tags: ["${DRONE_COMMIT_SHA:0:7}", "latest"]
+      when:
+        target:
+          exclude:
+            - production
+
+  - name: kube # building the API docker image
+    image: gcr.io/cloud-builders/kubectl
+    commands:
+      - echo ${DRONE_COMMIT_SHA:0:7}
+      - sed -i  "s/latest/${DRONE_COMMIT_SHA:0:7}/g" ./dev/kustomization.yaml
+      - kubectl apply -k ./dev
+    when:
+      target:
+        exclude:
+          - production
+
+  - name: kube_promote # building the API docker image
+    image: gcr.io/cloud-builders/kubectl
+    commands:
+      - echo ${DRONE_COMMIT_SHA:0:7}
+      - sed -i  "s/latest/${DRONE_COMMIT_SHA:0:7}/g" ./kustomize/deploy.yaml
+      - kubectl apply -k ./kustomize
+    when:
+      event:
+        - promote
+      target:
+        - production
+
+---
+kind: secret
+name: docker_username
+get:
+  path: secret/data/drone/docker/login
+  name: username
+---
+kind: secret
+name: docker_password
+get:
+  path: secret/data/drone/docker/login
+  name: password

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: resume-ingress
+  annotations:
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+    - hosts:
+        - will.gleich.tech
+  rules:
+    - host: will.gleich.tech
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: resume
+              servicePort: 8080

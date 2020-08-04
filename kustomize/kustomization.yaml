@@ -1,0 +1,7 @@
+resources:
+  - deploy.yaml
+  - svc.yaml
+  - ing.yaml
+#commonLabels:
+#  environment: development
+namespace: resume
