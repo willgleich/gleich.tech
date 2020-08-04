@@ -1,52 +1,45 @@
 pipeline {
   agent none
   stages {
-      stage('Build and Push Image') {
-    agent {
-    kubernetes {
-      label 'docker-build'
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-labels:
-  component: ci
-spec:
-  # Use service account that can deploy to all namespaces
-  serviceAccountName: jenkins
-  containers:
-  - name: docker-build
-    image: docker:18.06-dind
-    command:
-    - cat
-    tty: true
-    volumeMounts:
-    - name: dockersock
-      mountPath: "/var/run/docker.sock"
-  volumes:
-  - name: dockersock
-    hostPath:
-      path: /var/run/docker.sock
-  securityContext:
-    privileged: true
-"""
-  }
-  }
-      steps {
-        script {
-         container('docker-build'){
-          // Change deployed image in canary to the one we just built
-          def app
-          checkout scm
-          app = docker.build("wgleich/defn-ly")
-          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-            }
+    stage('Build with Kaniko') {
+      agent {
+        kubernetes {
+          //cloud 'kubernetes'
+          yaml """
+    kind: Pod
+    spec:
+      containers:
+      - name: kaniko
+        image: gcr.io/kaniko-project/executor:debug
+        imagePullPolicy: Always
+        command:
+        - /busybox/cat
+        tty: true
+        volumeMounts:
+          - name: jenkins-docker-cfg
+            mountPath: /kaniko/.docker
+      volumes:
+      - name: jenkins-docker-cfg
+        projected:
+          sources:
+          - secret:
+              name: regcred
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
+    """
         }
       }
-    }
-  }
+
+      steps {
+        git 'https://gitlab.com/wgleich/defn-ly.git'
+        container(name: 'kaniko') {
+            sh '''
+            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=wgleich/defn-ly:v$BUILD_NUMBER
+            '''
+        }
+      }
+     }
     stage('Deploy Project') {
         agent {
     kubernetes {
@@ -79,10 +72,10 @@ sh("""cat <<'EOF' | kubectl apply -f -
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: defn.ly
-  namespace: default
+  name: will.gleich
+  namespace: dev
   labels:
-    app: defn.ly
+    app: will.gleich
 spec:
   replicas: 1
   strategy:
@@ -97,7 +90,10 @@ spec:
     spec:
       containers:
         - name: node
-          image: wgleich/defn-ly:${env.BUILD_ID}
+          image: wgleich/defn-ly:v${BUILD_NUMBER}
+          env:
+            - name: rabbit_mq
+              value: "rabbit-rabbitmq-ha.rabbit.svc:5672"
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -107,7 +103,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: defn-ly
-  namespace: default
+  namespace: dev
 spec:
   type: LoadBalancer
   selector:
@@ -121,4 +117,5 @@ spec:
       }
     }
   }
-}
+  }
+
