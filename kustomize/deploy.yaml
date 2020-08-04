@@ -3,22 +3,22 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: goapi
-  name: goapi
+    app: resume
+  name: resume
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: goapi
+      app: resume
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: goapi
+        app: resume
     spec:
       containers:
-      - image: wgleich/goapi:latest
-        name: goapi
+      - image: wgleich/resume:latest
+        name: resume
         resources: {}
 status: {}
