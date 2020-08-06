@@ -18,6 +18,7 @@
 
 
 <script src="particles/particles.js"></script>
+<script src="typed.js"></script>
 
 <script>particlesJS.load('particles-js', 'particles/particles.json', function () {
         console.log('callback - particles.js config loaded');
@@ -28,7 +29,7 @@
 <div class="row h-100">
     <div class="card text-white bg-light mb-3 mx-auto my-auto" style="width: 20rem;" id="card1">
         <div class="card-body">
-            <center><p class="card-text" id="card-text">Inside the mind of <a href="/aboutme">William Gleich</a></p></center>
+            <center><p class="card-text" id="card-text">Inside the <a id="changing">mind</a> of <a href="/aboutme">William Gleich</a></p></center>
         </div>
     </div>
 </div>
@@ -40,18 +41,26 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+//
+// function rand_elem() {
+//     const items = ['HTML', "Javascript", "k8s", "Python"]
+//     var item = items[Math.floor(Math.random() * items.length)];
+//     $('#card-text').html("Inside the " + item +' of <a href="/aboutme">William Gleich</a>')
+//  }
+//
+// function undo_elem() {
+//         $('#card-text').html('Inside the mind of <a href="/aboutme">William Gleich</a>')
+//     }
 
-    async function rand_elem() {
-    const items = ['HTML', "Javascript", "k8s", "Python"]
-    var item = items[Math.floor(Math.random() * items.length)];
-    $('#card-text').html("Inside the " + item +' of <a href="/aboutme">William Gleich</a>')
-    await sleep(2000);
- }
-
-    function undo_elem() {
-        $('#card-text').html('Inside the mind of <a href="/aboutme">William Gleich</a>')
-    }
-
-    document.getElementById('card1').addEventListener('mouseenter', rand_elem);
+    // document.getElementById('card1').addEventListener('mouseenter', rand_elem);
     // document.getElementById('card1').addEventListener('onmouseout', undo_elem);
+
+    var options = {
+        strings: ['mind', "Docker", "Javascript", "Kubernetes", "SSH", "Python", "Kernel", "Terraform", 'HTTP', "mind"],
+        typeSpeed: 100,
+        backDelay: 1000,
+        onComplete: function(self) { self.cursor.remove() }
+    };
+
+    var typed = new Typed('#changing', options);
 </script>

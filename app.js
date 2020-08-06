@@ -9,7 +9,7 @@ app.use(express.static(__dirname + "/public"));
 
 
 app.get('/', function(req, res){
-    res.render('construct')
+    res.render('index')
 });
 
 
