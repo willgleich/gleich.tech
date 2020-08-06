@@ -1,66 +1,57 @@
 <%- include ('base.ejs'); %>
 
 
-<!-- Full Page Image Header with Vertically Centered Content -->
-<header class="masthead">
-    <div class="container h-100">
-        <div class="row h-100 align-items-center">
-            <div class="col-12 text-center">
-                <h1 class="font-weight-light">will.gleich</h1><br>
-                Inside the mind of <a href="/aboutme">William Gleich</a>
-            </div>
+
+<style>
+    #particles-js {
+        z-index: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+
+    body {
+        overflow-y: hidden;
+    }
+</style>
+
+
+<script src="particles/particles.js"></script>
+
+<script>particlesJS.load('particles-js', 'particles/particles.json', function () {
+        console.log('callback - particles.js config loaded');
+    });</script>
+
+
+<div id="particles-js"></div>
+<div class="row h-100">
+    <div class="card text-white bg-light mb-3 mx-auto my-auto" style="width: 20rem;" id="card1">
+        <div class="card-body">
+            <center><p class="card-text" id="card-text">Inside the mind of <a href="/aboutme">William Gleich</a></p></center>
         </div>
     </div>
-</header>
-
-
-
-
-<!--    <footer class="pt-4 my-md-5 pt-md-5 border-top">-->
-<!--        <div class="row">-->
-<!--            <div class="col-12 col-md">-->
-<!--                <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">-->
-<!--                <small class="d-block mb-3 text-muted">© 2017-2018</small>-->
-<!--            </div>-->
-<!--            <div class="col-6 col-md">-->
-<!--                <h5>Features</h5>-->
-<!--                <ul class="list-unstyled text-small">-->
-<!--                    <li><a class="text-muted" href="#">Cool stuff</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Random feature</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Team feature</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Stuff for developers</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Another one</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Last time</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--            <div class="col-6 col-md">-->
-<!--                <h5>Resources</h5>-->
-<!--                <ul class="list-unstyled text-small">-->
-<!--                    <li><a class="text-muted" href="#">Resource</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Resource name</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Another resource</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Final resource</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--            <div class="col-6 col-md">-->
-<!--                <h5>About</h5>-->
-<!--                <ul class="list-unstyled text-small">-->
-<!--                    <li><a class="text-muted" href="#">Team</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Locations</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Privacy</a></li>-->
-<!--                    <li><a class="text-muted" href="#">Terms</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </footer>-->
 </div>
 
 
 
-<!-- Page Content -->
-<!--<section class="py-5">-->
-<!--    <div class="container">-->
-<!--        <h2 class="font-weight-light">Page Content</h2>-->
-<!--        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus ab nulla dolorum autem nisi officiis blanditiis voluptatem hic, assumenda aspernatur facere ipsam nemo ratione cumque magnam enim fugiat reprehenderit expedita.</p>-->
-<!--    </div>-->
-<!--</section>-->
+<script>
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+    async function rand_elem() {
+    const items = ['HTML', "Javascript", "k8s", "Python"]
+    var item = items[Math.floor(Math.random() * items.length)];
+    $('#card-text').html("Inside the " + item +' of <a href="/aboutme">William Gleich</a>')
+    await sleep(2000);
+ }
+
+    function undo_elem() {
+        $('#card-text').html('Inside the mind of <a href="/aboutme">William Gleich</a>')
+    }
+
+    document.getElementById('card1').addEventListener('mouseenter', rand_elem);
+    // document.getElementById('card1').addEventListener('onmouseout', undo_elem);
+</script>
