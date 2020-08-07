@@ -17,3 +17,6 @@ images:
   - name: wgleich/resume
     newName: wgleich/resume
     newTag: "latest"
+
+patchesStrategicMerge:
+  - replicas.yaml

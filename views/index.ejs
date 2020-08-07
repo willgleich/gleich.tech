@@ -14,6 +14,10 @@
     body {
         overflow-y: hidden;
     }
+
+    /*#card1 {*/
+    /*    padding-bottom: 10rem;*/
+    /*}*/
 </style>
 
 
@@ -27,9 +31,9 @@
 
 <div id="particles-js"></div>
 <div class="row h-100">
-    <div class="card text-white bg-light mb-3 mx-auto my-auto" style="width: 20rem;" id="card1">
+    <div class="card text-white bg-light mb-3 mx-auto my-auto" style="width: 25rem;" id="card1">
         <div class="card-body">
-            <center><p class="card-text" id="card-text">Inside the <a id="changing">mind</a> of <a href="/aboutme">William Gleich</a></p></center>
+            <center><h5 class="card-text" id="card-text">Inside the <a id="changing">mind</a> of <a href="/aboutme">William Gleich</a></h5></center>
         </div>
     </div>
 </div>
@@ -59,6 +63,7 @@ function sleep(ms) {
         strings: ['mind', "Docker", "Javascript", "Kubernetes", "SSH", "Python", "Kernel", "Terraform", 'HTTP', "mind"],
         typeSpeed: 100,
         backDelay: 1000,
+        backSpeed: 50,
         onComplete: function(self) { self.cursor.remove() }
     };
 
