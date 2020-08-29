@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-//var mysql = require('mysql');
 var bodyParser = require("body-parser");
 var fs = require('fs');
 app.set("view engine", "ejs");
