@@ -1,4 +1,3 @@
-# Homelab Antics Part 1
 
 The year was 2016 and it all started with a dream. The dream was understanding computing in an advanced way.
 Living at my parents house as a recent Help Desk hire, so many of my problems revolved around 
