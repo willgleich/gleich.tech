@@ -1,11 +1,14 @@
 var express = require('express');
 var app = express();
+var path = require('path');
 //var mysql = require('mysql');
 var bodyParser = require("body-parser");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
+app.set('views', path.join(__dirname, '/views'));
+const router = express.Router({ strict: true })
 
 
 app.get('/', function(req, res){
