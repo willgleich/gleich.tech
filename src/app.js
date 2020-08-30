@@ -58,9 +58,6 @@ app.get('/blog', async function(req, res){
 });
 
 
-
-
-
 app.get('/resume', function(req, res){
     res.render('resume')
 });
