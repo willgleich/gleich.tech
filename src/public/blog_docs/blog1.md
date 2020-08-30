@@ -16,7 +16,7 @@ my gaming PC is not enough to prevent service impacts, especially regarding DHCP
 #### The Gateway to Wonderland
 After talking through my homelab desires with [one of my colleagues at the time](https://github.com/backcountryinfosec) he recommended pfSense - the solution was identified!
 
-![image info](pfsense.jpg)
+![image info](images/pfsense.jpg)
 
 pfSense is a router/firewall operating system that is commonly used by SOHO (Small Office / Home Office) deployments, but also works great as a virtual machine.
 
