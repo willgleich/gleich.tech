@@ -10,23 +10,35 @@ app.use(express.static(__dirname + "/public"));
 app.set('views', path.join(__dirname, '/views'));
 const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
+const stat = promisify(fs.stat);
+
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
  async function get_blog_data(filename) {
 
      const contents = await readFile(path.join(__dirname, './public/blog_docs/' + filename),'utf8');
-     console.log(contents);
-     return contents;
-    // await fs.readFile(path.join(__dirname, './public/blog_docs/' + filename), 'utf8', async function(err, contents) {
-    //     var showdown  = require('showdown'),
-    //         converter = new showdown.Converter(),
-    //         html      = await converter.makeHtml(contents);
-    //
-    var data = {title: "Homelab Antics Part 1",
-        body: html,
-        date: "2020-08-08"};
-
-     return data;
-    // });
+     const showdown = require('showdown'),
+         converter = new showdown.Converter(),
+         html = await converter.makeHtml(contents);
+     const file_stat = await stat(path.join(__dirname, './public/blog_docs/' + filename),'utf8');
+     return {
+         title: "Homelab Antics Part 1",
+         body: html,
+         date: formatDate(file_stat.mtime)
+     };
 }
 
 app.get('/', function(req, res){
@@ -41,11 +53,8 @@ app.get('/index', function(req, res){
 
 
 app.get('/blog', async function(req, res){
-    // read the file async and render the response
-    blog_data =  await get_blog_data("blog1.md");
+    blog_data = await get_blog_data("blog1.md");
     res.render('blog', {data:blog_data});
-
-
 });
 
 
