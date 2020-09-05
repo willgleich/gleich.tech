@@ -1,22 +1,54 @@
 <%- include ('base.ejs'); %>
 <style>
-   p { display: inline }
-    .jumbotron > img { padding-bottom: 50px }
+    p {
+        display: inline
+    }
+
+    .jumbotron > img {
+        padding-bottom: 50px;
+        background: contain;
+    }
+
+    .custom-button {
+        width: 200px !important;
+        /*margin-left: 3em;*/
+    }
+
+
+
 </style>
 <br>
 <div class="container">
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-sm-12 col-md-3 text-center">
+                <img src="images/will_portrait.jpg" class="d-block mx-auto img-fluid" >
+            </div>
+            <div class="col-sm-12 col-md-9">
+                <!--    <div class="col-sm-6 img-fluid">-->
+                <h1 class="display-4">I am William Gleich...</h1>
+                <p class="lead">I am employed as a DevOps Engineer working at ARUP Laboratories.
+                    <br>My focus is
+                <p class="text-warning lead">Linux Automation</p> and <p class="text-info lead">Kubernetes</p></p><br>
+                <hr class="my-4">
+                <p>I enjoy utilizing
+                <p class="text-success">Python</p> whenever possible for automation, analytics and integrations <br>
 
-<div class="jumbotron">
-    <img src="images/will_portrait.jpg" height="300px"  class="float-right">
-    <h1 class="display-3">I am William Gleich...</h1>
-    <p class="lead">I am employed as a DevOps Engineer working at ARUP Laboratories.
-        <br>My focus is <p class="text-warning lead">Linux Automation</p> and <p class="text-info lead">Kubernetes</p></p><br>
-    <hr class="my-4">
-    <p>I enjoy utilizing <p class="text-success">Python</p> whenever possible for automation, analytics and integrations <br>
+                In my free time you will find me skiing, hiking, cycling, or video gaming</p>
+                <br>                <br>                <br>
+                <div class="text-sm-center">
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg custom-button" href="/resume" role="button">git checkout resume</a>
+                </p>
+                    <p>    </p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg custom-button" href="/blog" role="button" style="padding-left:5px;">git checkout blog</a>
+                </p>
+                </div>
+            </div>
 
-        In my free time you will find me skiing, hiking, mountain biking, or video gaming</p>
-<!--    <p class="lead">-->
-<!--        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
-<!--    </p>-->
+        </div>
+    </div>
 </div>
-</div>
+
+
