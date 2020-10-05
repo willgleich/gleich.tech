@@ -18,9 +18,7 @@ The project started with these goals
     * Automatic deployment into the cloud
 * Secondary Goal: Learning about google functions and google IAM
 #### Architecture
-img
-
-
+<img src="images/blog/gleich-tech-switch1.png" height="150px" class="img-fluid">
 
 #### Python Client
 The work was cut out for me, it was time to start digging into coding and wiring up deployment of the newly minted
@@ -78,7 +76,7 @@ https://will.iam.gleich.tech
 #### HTTP Triggered
 At this point I had my function on continuous deployment to gcp.
 I had a manual image ready to go in the gcr for cloud run deployment. The cloud function has been tested with manual HTTP trigger.
-All of the minimal viable product functionality was there except the automatic trigger from google monitoring.
+All of the minimal viable product (MVP) functionality was there except the automatic trigger from google monitoring.
 I thought that I would need to grant IAM access to the google monitoring gcloud service account to invoke my google function.
 This interaction wasn't immediately obvious and upon further testing it looked like that google monitoring http webhooks
 would only trigger utilizing basic authentication, an option on the webhook configuration modal. 
@@ -91,24 +89,59 @@ you need to pivot.
 #### Events
 The next logical step for testing this functionality was to look at a queue based trigger. I wanted to integrate closely
 with GCP patterns and PUB/SUB looked to be straightforward to implement. Redeploing the google function with `--trigger-topic=gleich-tech`
-followed by some boilerplate terraform is all that was required
+followed by some [boilerplate terraform](https://github.com/willgleich/gleich.tech/blob/master/tf/main.tf#L45-L62) was all that was required.
+There was some other testing in this process with creating a manual subscriber, as well as a manually created iam policy in the console.
+All of this was as straightforward as I would've expected. The good news is, I have a workflow ready for testing!
 
-Timeline: Triggered Failure at 17:08:09 : `k scale deploy -n resume resume --replicas=0` 
+#### It Works!
+With our new pubsub topic trigger, we are ready to test actual performance! Here is the following timeline of events on Oct 2nd:
 
+* 17:08:09 - Triggered Failure: `k scale deploy -n resume resume --replicas=0` 
+* 17:10:46 - Google Monitoring Alert and Published Message at
+* Google Domain Mapping Status (note below is UTC vs MST):
 
-```
-   'status': {'conditions': [{'type': 'Ready',
-      'status': 'True',
-      'lastTransitionTime': '2020-10-02T23:12:33.820298Z'},
-     {'type': 'CertificateProvisioned',
-      'status': 'True',
-      'lastTransitionTime': '2020-10-02T23:12:33.820298Z'},
-     {'type': 'DomainRoutable',
-      'status': 'True',
-      'lastTransitionTime': '2020-10-02T23:11:04.849392Z'}],
-```
-Back Online 5:21:39
+    ```
+       'status': {'conditions': [{'type': 'Ready',
+          'status': 'True',
+          'lastTransitionTime': '2020-10-02T23:12:33.820298Z'},
+         {'type': 'CertificateProvisioned',
+          'status': 'True',
+          'lastTransitionTime': '2020-10-02T23:12:33.820298Z'},
+         {'type': 'DomainRoutable',
+          'status': 'True',
+          'lastTransitionTime': '2020-10-02T23:11:04.849392Z'}],
+    ```
+* 17:24:35 Google Monitoring Alert Resolution
 
+I also have a screen shot of the locust.io load testing I initiated before triggering the fail over:
+<img src="images/blog/first_attempt_failover.png" class="img-fluid">
 
+This puts failure right around 17:08:30 and resolution at 17:21:39, well things are a little off from the google monitoring timing,
+but some error is to be expected in these tools. The good news is we did it,  with a simulated fail over google monitoring 
+triggered our google function and deployed this website in the cloud and routed the cloudflare DNS using a page rule rewrite.
+< sarcasm >It only took 13 minutes for fail over to take place!!! < /sarcasm > We will leave whatever happened between 
+the Ready status of the domain routing 
+
+#### We're done! We did it!
+... If only things were that easy. While we have a working product, there are numerous improvements I stumbled upon that I decided to withhold. 
+During the previous parts of this blog I intentionally was following the architecture design that I created initially, sometimes referred to as tunnel vision.
+I tried to deviate as little as possible, both to create a targeted blog post, as well as emphasize the most important part of designing a new system: continuous improvement
+When I created my initial architecture flow I had limited knowledge of how these integrations would work. I had an idea, but I didn't know exactly how the pieces fit together.
+This is shown by the two changes I had made:
+    * Scraping serverless in favor of google functions deploy
+    * Scraping HTTP trigger in favor of PubSub Trigger
+    * Utilizing a redirect instead of direct DNS update
+Now that we have a MVP created, its time to dive in a few improvements identified. First and foremost, the 15 minute fail over time is **unacceptable.**
+
+#### Unauthorized Cloud Run Requests
+During my deployment testing I noticed that Cloud Run invocations require permissions in order to access it. In this case my website
+will be openly available to the internet, allowing "allUsers" access to the invoke the cloud function. 
 
 #### Improvements
+* Revert option on the google function to change config back to on prem
+    * enable/disable google monitoring
+* Fine Grained, Terraform Managed RBAC on the following resources
+    * Google Monitoring SA
+    * Google Functions Secret Access
+* Test Suite on GCP Function
+  

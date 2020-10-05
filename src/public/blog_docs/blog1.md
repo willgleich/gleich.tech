@@ -18,7 +18,7 @@ After talking through my homelab desires with [one of my colleagues at the time]
 
 <a href="https://www.pfsense.org/"><img src="images/blog/pfsense.jpg" height="300px" class="img-fluid"></a>
 
-pfSense is a router/firewall operating system that is commonly used by SOHO (Small Office / Home Office) deployments, but also works great as a virtual machine.
+pfSense is a router/firewall operating system that is commonly used by SOHO (Small Office / Home Office) deployments, and also works great as a virtual machine.
 
 The plan was in place - down the rabbit hole we go:
 * Segment/Subnet a new network to test without impacting the parent network (This was the goal - I would learn later the following subtasks were required)
