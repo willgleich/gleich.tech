@@ -42,26 +42,26 @@ resource "google_monitoring_uptime_check_config" "https" {
     timeouts {}
 }
 
-resource "google_monitoring_alert_policy" "alert_policy" {
-  display_name = "My Alert Policy"
-  combiner     = "OR"
-  conditions {
-    display_name = "test condition"
-    condition_threshold {
-      filter     = "metric.type=\"compute.googleapis.com/instance/disk/write_bytes_count\" AND resource.type=\"gce_instance\""
-      duration   = "60s"
-      comparison = "COMPARISON_GT"
-      aggregations {
-        alignment_period   = "60s"
-        per_series_aligner = "ALIGN_RATE"
-      }
-    }
-  }
-
-  user_labels = {
-    foo = "bar"
-  }
-}
+//resource "google_monitoring_alert_policy" "alert_policy" {
+//  display_name = "My Alert Policy"
+//  combiner     = "OR"
+//  conditions {
+//    display_name = "test condition"
+//    condition_threshold {
+//      filter     = "metric.type=\"compute.googleapis.com/instance/disk/write_bytes_count\" AND resource.type=\"gce_instance\""
+//      duration   = "60s"
+//      comparison = "COMPARISON_GT"
+//      aggregations {
+//        alignment_period   = "60s"
+//        per_series_aligner = "ALIGN_RATE"
+//      }
+//    }
+//  }
+//
+//  user_labels = {
+//    foo = "bar"
+//  }
+//}
 
 resource "google_pubsub_topic" "gleich-tech" {
   name = "gleich-tech"
@@ -80,4 +80,34 @@ resource "google_pubsub_topic_iam_member" "member" {
   topic = google_pubsub_topic.gleich-tech.name
   role = "roles/pubsub.publisher"
   member = "serviceAccount:service-248394897420@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+}
+
+resource "google_cloud_run_service" "default" {
+  name     = "gleich-tech"
+  location = "us-central1"
+
+  metadata {
+    namespace = "main-285019"
+  }
+
+  template {
+    spec {
+      containers {
+        image = "gcr.io/main-285019/resume"
+      }
+    }
+  }
+}
+
+resource "google_cloud_run_domain_mapping" "default" {
+  location = "us-central1"
+  name     = "will.iam.gleich.tech"
+
+  metadata {
+    namespace = "main-285019"
+  }
+
+  spec {
+    route_name = google_cloud_run_service.default.name
+  }
 }

@@ -24,7 +24,7 @@ steps:
           exclude:
             - production
 
-  - name: kube # building the API docker image
+  - name: kube_deploy_dev # building the API docker image
     image: gcr.io/cloud-builders/kubectl
     commands:
       - echo ${DRONE_COMMIT_SHA:0:7}
@@ -35,7 +35,7 @@ steps:
         exclude:
           - production
 
-  - name: kube_promote # building the API docker image
+  - name: kube_promote_prod # building the API docker image
     image: gcr.io/cloud-builders/kubectl
     commands:
       - echo ${DRONE_COMMIT_SHA:0:7}
@@ -47,6 +47,41 @@ steps:
       target:
         - production
 
+  - name: publish_gcr
+    image: plugins/gcr
+    settings:
+      repo: main-285019/resume
+      dockerfile: Dockerfile
+      tags: latest
+      json_key:
+        from_secret: gcpkey
+    when:
+      event:
+        - promote
+      target:
+        - production
+
+  - name: bump_cloud_run_image
+    image: gcr.io/cloud-builders/gcloud
+    environment:
+      GCPKEY:
+        from_secret: gcpescaped
+    commands:
+      - 'echo "$GCPKEY" >> ~/keyfile.json'
+      - gcloud auth activate-service-account --key-file ~/keyfile.json
+      - gcloud run deploy gleich-tech --image gcr.io/main-285019/resume:latest --platform managed --region us-central1
+    when:
+      event:
+        - promote
+      target:
+        - production
+
+---
+kind: secret
+name: gcpescaped
+get:
+  path: secret/data/drone/gcp
+  name: keyfile.json
 ---
 kind: secret
 name: docker_username
@@ -59,3 +94,9 @@ name: docker_password
 get:
   path: secret/data/drone/docker/login
   name: password
+---
+kind: secret
+name: gcpkey
+get:
+  path: secret/data/drone/gke
+  name: keyfile.json
