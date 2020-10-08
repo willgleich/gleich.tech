@@ -146,14 +146,30 @@ keep my cloud run deployed permanently with no way to access it. My lambda trigg
 
 This architectural shift would require that production CI/CD deployments also push images to both gcr.io and refresh
 the cloud run service with the new image. This is quite straightforward inmost ci/cd platforms and was easy to implement with drone.io.
+Yet another architecture diagram: 
+<img src="images/blog/gleich-tech-switch_3.png" class="img-fluid">
 
+#### Testing time
+It is time to test the new layout. After another simulated failover:
+<img src="images/blog/second_attempted_failover.png" class="img-fluid">
 
+Now this is looking good, we brought our previous 13 minute failover down to about 3 minutes. For a cost sensitive homelab project,
+this is where we say "good enough." The optimized solution for a personal resume website allows for eloquent hands-off failover into the cloud.
+Due to the cost sensitive nature, one more feature will need to be implemented before this project can called complete.
+After we failover into the cloud, we want to disable the cloud monitoring otherwise we will incur all of those invocation 
+costs on our cloud run service. This is another implementaiton with `google-api-python-client`, and I will leave it to you 
+if you want to see the code:
+* [will.gleich.tech](https://github.com/willgleich/gleich.tech)
+* gleich-tech-switch(https://github.com/willgleich/gleich-tech-switch)
 
-#### Improvements
-* Revert option on the google function to change config back to on prem
-    * enable/disable google monitoring
-* Fine Grained, Terraform Managed RBAC on the following resources
-    * Google Monitoring SA
-    * Google Functions Secret Access
-* Test Suite on GCP Function
-  
+#### Conclusion
+This exercise highlights an important aspect of designing a new system. 
+
+Prototyping is an essential task that could've sped up this implementation.
+Had this been an enterprise project, developing a prototype or as  
+
+The amount of architectural changes made for a 
+better blog post, but also made for much more work than needed. 
+
+Perhaps the issue originated from my original modeling, but
+as I mentioned before, many of th
