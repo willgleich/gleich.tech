@@ -43,7 +43,7 @@ resource "google_monitoring_uptime_check_config" "https" {
 }
 
 //resource "google_monitoring_alert_policy" "alert_policy" {
-//  display_name = "My Alert Policy"
+//  display_name = "gleich-tech-alert"
 //  combiner     = "OR"
 //  conditions {
 //    display_name = "test condition"
@@ -93,7 +93,7 @@ resource "google_cloud_run_service" "default" {
   template {
     spec {
       containers {
-        image = "gcr.io/main-285019/resume"
+        image = "gcr.io/main-285019/resume:latest"
       }
     }
   }

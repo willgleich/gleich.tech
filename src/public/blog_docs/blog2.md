@@ -132,10 +132,22 @@ This is shown by the two changes I had made:
     * Scraping HTTP trigger in favor of PubSub Trigger
     * Utilizing a redirect instead of direct DNS update
 Now that we have a MVP created, its time to dive in a few improvements identified. First and foremost, the 15 minute fail over time is **unacceptable.**
+Here is the current status of the architecture:
+<img src="images/blog/gleich-tech-switch_2.png" class="img-fluid">
+
+
 
 #### Unauthorized Cloud Run Requests
 During my deployment testing I noticed that Cloud Run invocations require permissions in order to access it. In this case my website
-will be openly available to the internet, allowing "allUsers" access to the invoke the cloud function. 
+will be openly available to the internet, allowing "allUsers" access to the invoke the cloud function. This would allow me to
+keep my cloud run deployed permanently with no way to access it. My lambda trigger could then focus on the two enabling operations:
+* Enable allUser to the cloud run invoker
+* Enable the Cloudflare Page Rule redirect to the standby domain
+
+This architectural shift would require that production CI/CD deployments also push images to both gcr.io and refresh
+the cloud run service with the new image. This is quite straightforward inmost ci/cd platforms and was easy to implement with drone.io.
+
+
 
 #### Improvements
 * Revert option on the google function to change config back to on prem
