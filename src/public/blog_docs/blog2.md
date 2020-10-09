@@ -158,12 +158,12 @@ if you want to see the code:
 * [will.gleich.tech](https://github.com/willgleich/gleich.tech)
 * [gleich-tech-switch](https://github.com/willgleich/gleich-tech-switch)
 
-A quick note here: While this solution makes for a great, cheap homelab solution, 3 minutes of downtime for an enterprise service is often unacceptable. Looking further into this on a enterprise level 
+A quick note here: While this solution makes for a great, cheap homelab solution, 3 minutes of downtime for an enterprise service is often unacceptable. Looking further into this on a enterprise level a load balancing solution would be required.  
 
 #### Testing time
 
 It is time to test the new layout. After another simulated failover:
-<img src="images/blog/second_attempt_failover.png" class="img-fluid">
+<img src="images/blog/second_attempt_failover.jpeg" class="img-fluid">
 
 Now this is looking better, we brought our previous 13 minute failover down to about 3 minutes. For a cost sensitive homelab project,
 this is where we say "good enough." This optimized solution for a personal resume website allows for eloquent hands-off failover into the cloud in about 3 minutes. 
