@@ -89,7 +89,7 @@ you need to pivot. Opening up my google function to the world and handling basic
 #### Events
 The next logical step for testing this functionality was to look at a queue based trigger. I wanted to integrate closely
 with GCP patterns and PUB/SUB looked to be straightforward to implement. Redeploing the google function with `--trigger-topic=gleich-tech`
-followed by some [boilerplate terraform](https://github.com/willgleich/gleich.tech/blob/master/tf/main.tf#L45-L62) was all that was required.
+followed by some [boilerplate terraform](https://github.com/willgleich/gleich.tech/blob/master/tf/main.tf#L66-L83) was all that was required.
 There was some other testing in this process with creating a manual subscriber, as well as a manually created iam policy in the console.
 All of this was as straightforward as I would've expected. The good news is, I have a workflow ready for testing!
 
@@ -120,7 +120,7 @@ This puts failure right around 17:08:30 and resolution at 17:21:39, well things 
 but some error is to be expected in these tools. The good news is we did it,  with a simulated fail over google monitoring 
 triggered our google function and deployed this website in the cloud and routed the cloudflare DNS using a page rule rewrite.
 < sarcasm >It only took 13 minutes for fail over to take place!!! < /sarcasm > We will leave whatever happened between 
-the Ready status of the domain routing 
+the Ready status of the domain routing and the service actually coming up described as one of the great mysteries of the world. 
 
 #### We're done! We did it!
 ... If only things were that easy. While we have a working product, there are numerous improvements I stumbled upon that I decided to withhold. 
