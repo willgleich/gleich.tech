@@ -69,7 +69,7 @@ steps:
     commands:
       - 'echo "$GCPKEY" >> ~/keyfile.json'
       - gcloud auth activate-service-account --key-file ~/keyfile.json
-      - gcloud run deploy gleich-tech --image gcr.io/main-285019/resume:latest --platform managed --region us-central1
+      - gcloud run deploy gleich-tech --image gcr.io/main-285019/resume:latest --platform managed --region us-central1 --project main-285019
     when:
       event:
         - promote
