@@ -203,4 +203,4 @@ This exercise highlights many important aspects of designing a new system. Manua
 >
 > To get the same effect in code, we're looking for something that gets us from a requirement to some aspect of the final system quickly, visibly, and repeatably."
 >
-> Excerpt From: Hunt, Andrew;Thomas, David. “The Pragmatic Programmer: From Journeyman to Master.” Apple Books. 
+> Excerpt From: Hunt, Andrew;Thomas, David. “The Pragmatic Programmer: From Journeyman to Master.” 
