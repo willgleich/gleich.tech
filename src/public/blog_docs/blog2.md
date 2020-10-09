@@ -7,12 +7,13 @@ that resulted in my property losing power for 55 hours! There were other propert
 in SLC that had lost power for 5+ days! Needless to say will.gleich.tech was down for those 55 hours, and that was unacceptable. 
 I wanted to find an inexpensive solution to allow for fail over to the cloud.
 I had been looking at exploring lambdas and thought this would be perfect.
-If I can configure a cloud monitor in GCP, if that monitor triggers a lambda, I could utilize that cloud monitor to 
+If I can configure a cloud monitor in GCP, and if that monitor triggers a lambda, I could utilize that cloud monitor to 
 deploy a new replica of my web server in the cloud. After a manual mock-up it looked like GCP's cloud run would be the deployment solution. 
 Cost savings is a big goal here which is why I didn't look into a full static deployment and load balancing. 
+
 ### Project Time
 #### Goals
-The project started with these goals
+The project started with these goals:
 * Low Cost DR/Failover Solution for https://will.gleich.tech
     * Monitor based trigger to alert for downtime
     * Automatic deployment into the cloud
@@ -48,7 +49,7 @@ I was able to deploy a cloud run instance utilizing python. Now to wire up this 
 I have read about and used serverless in the past. I immediately started jumping to deployments using the serverless node.JS based helper utility.
 Getting the local deployments off the group were a breeze, `serverless create --template google-python --path gleich-tech-switch`
 and I had a template. A few minor edits and I was already deploying with `serverless deploy` using the helloworld example.
-Getting a hello world template'd and deployed was trivial, however things started to become more involved while trying to 
+Getting a helloworld template'd and deployed was trivial, however things started to become more involved while trying to 
 integrate the serverless with my drone.io build process. I needed to leverage the `serverless-python-requirements` plugin for handling python dependencies.
 Serverless was clearly an AWS first tool after testing, and the integratation with GCP was frustrating. Runtimes and binary names were mismatched,
 and dockerizePip would've required docker.sock or privileged access to my cluster.
@@ -62,7 +63,7 @@ There really isn't much to say here on an implementation front, cloudflare offer
 The web ui is easy to navigate, their python client was also easy. I was pushing and testing code quite quickly, whether it was
 DNS record updating or page rule updating.
 The documentation around all of this is great as well. Furthermore, accessing secrets (cloudflare apikey) from google
- cloud both on prem and utilizing cloud iam roles attached to my function were a breeze
+ cloud both on prem and utilizing cloud iam roles attached to my function were a breeze.
 The hardest part was ironing out the seams between google domain management and cloudflare.
 
 #### Cloud Run Domain Mapping
@@ -78,12 +79,12 @@ At this point I had my function on continuous deployment to gcp.
 I had a manual image ready to go in the gcr for cloud run deployment. The cloud function has been tested with manual HTTP trigger.
 All of the minimal viable product (MVP) functionality was there except the automatic trigger from google monitoring.
 I thought that I would need to grant IAM access to the google monitoring gcloud service account to invoke my google function.
-This interaction wasn't immediately obvious and upon further testing it looked like that google monitoring http webhooks
+This interaction wasn't immediately obvious and upon further testing it looked like google monitoring http webhooks
 would only trigger utilizing basic authentication, an option on the webhook configuration modal. 
-I did some initial tests granting function invoker access to allUsers and allAuthorizedUsers 
+I did some initial tests by granting function invoker access to allUsers and allAuthorizedUsers 
 members of gcp - when I granted access to allUsers, google monitoring HTTP could obviously trigger. When I granted access to 
 allAuthorizedUsers google monitoring wouldn't trigger. This led me to believe that http webhooks on google monitoring do 
-not actually use a GCP IAM service account. That wasn't a implementation concern I was anticipating, however sometimes
+not actually use a GCP IAM service account. That wasn't an implementation concern I was anticipating, however sometimes
 you need to pivot. Opening up my google function to the world and handling basic authentication on the function level seemed like the wrong solution.
 
 #### Events
@@ -125,13 +126,14 @@ the Ready status of the domain routing and the service actually coming up descri
 #### We're done! We did it!
 ... If only things were that easy. While we have a working product, there are numerous improvements I stumbled upon that I decided to withhold. 
 During the previous parts of this blog I intentionally was following the architecture design that I created initially, sometimes referred to as tunnel vision.
-I tried to deviate as little as possible, both to create a targeted blog post, as well as emphasize the most important part of designing a new system: continuous improvement
+I tried to deviate as little as possible, both to create a targeted blog post, as well as emphasize the most important part of designing a new system: continuous improvement.
 When I created my initial architecture flow I had limited knowledge of how these integrations would work. I had an idea, but I didn't know exactly how the pieces fit together.
 This is shown by the two changes I had made:
 
 * Scrapping serverless in favor of google functions deploy
 * Scrapping HTTP trigger in favor of PubSub Trigger
 * Utilizing a redirect instead of direct DNS update
+
 Now that we have a MVP created, its time to dive in a few improvements identified. First and foremost, the 15 minute fail over time is **unacceptable.**
 
 
@@ -143,7 +145,8 @@ Here is the current status of the architecture:
 #### Unauthorized Cloud Run Requests
 During my deployment testing I noticed that Cloud Run invocations require permissions in order to access it. In this case my website
 will be openly available to the internet, allowing "allUsers" access to the invoke the cloud function. This would allow me to
-keep my cloud run deployed permanently with no way to access it. It appears that I do not get billed for 401  My lambda trigger could then focus on the two enabling operations:
+keep my cloud run deployed permanently with no way to access it. I do not get billed for 401 requests so that be can my "off" state with the service ready to allow for "allUsers" access. My lambda trigger could then focus on the two enabling operations:
+
 * Enable allUser to the cloud run invoker
 * Enable the Cloudflare Page Rule redirect to the standby domain
 
