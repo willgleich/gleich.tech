@@ -16,9 +16,9 @@ The project started with these goals
 * Low Cost DR/Failover Solution for https://will.gleich.tech
     * Monitor based trigger to alert for downtime
     * Automatic deployment into the cloud
-* Secondary Goal: Learning about google functions and google IAM
+* Secondary Goal: Learning about google functions, iam and api
 #### Architecture
-<img src="images/blog/gleich-tech-switch1.png" height="150px" class="img-fluid">
+<img src="images/blog/gleich-tech-switch_1.png" height="150px" class="img-fluid">
 
 #### Python Client
 The work was cut out for me, it was time to start digging into coding and wiring up deployment of the newly minted
@@ -67,7 +67,7 @@ The hardest part was ironing out the seams between google domain management and 
 
 #### Cloud Run Domain Mapping
 Upon review of my architecture, it became clear that DNS propagation was going to be a really slow step. 
-Initially I was thinking I would reroute DNS https://will.gleich.tech to point to whatever records cloud run requires.
+Initially I was thinking I would reroute DNS, https://will.gleich.tech, to point to whatever records cloud run requires.
 Using the same python discovery api, I actually broke the google cloud run domain mapping web interface multiple times while sending malformed API requests.
 Oddly enough it required the API to remediate as well. After getting the api calls worked out and the code sampled it was time to start demos.immediately
 I was running the code locally and after a few test runs of using a vanity domain, it was decided to just keep a static failover domain dedicated to gcp cloud run.
@@ -81,7 +81,7 @@ I thought that I would need to grant IAM access to the google monitoring gcloud 
 This interaction wasn't immediately obvious and upon further testing it looked like that google monitoring http webhooks
 would only trigger utilizing basic authentication, an option on the webhook configuration modal. 
 I did some initial tests granting function invoker access to allUsers and allAuthorizedUsers 
-members of gcp - when I granted access to allUsers, google monitoring could obviously trigger. When I granted access to 
+members of gcp - when I granted access to allUsers, google monitoring HTTP could obviously trigger. When I granted access to 
 allAuthorizedUsers google monitoring wouldn't trigger. This led me to believe that http webhooks on google monitoring do 
 not actually use a GCP IAM service account. That wasn't a implementation concern I was anticipating, however sometimes
 you need to pivot.
@@ -128,9 +128,10 @@ During the previous parts of this blog I intentionally was following the archite
 I tried to deviate as little as possible, both to create a targeted blog post, as well as emphasize the most important part of designing a new system: continuous improvement
 When I created my initial architecture flow I had limited knowledge of how these integrations would work. I had an idea, but I didn't know exactly how the pieces fit together.
 This is shown by the two changes I had made:
-    * Scraping serverless in favor of google functions deploy
-    * Scraping HTTP trigger in favor of PubSub Trigger
-    * Utilizing a redirect instead of direct DNS update
+
+* Scrapping serverless in favor of google functions deploy
+* Scrapping HTTP trigger in favor of PubSub Trigger
+* Utilizing a redirect instead of direct DNS update
 Now that we have a MVP created, its time to dive in a few improvements identified. First and foremost, the 15 minute fail over time is **unacceptable.**
 Here is the current status of the architecture:
 <img src="images/blog/gleich-tech-switch_2.png" class="img-fluid">
@@ -149,27 +150,55 @@ the cloud run service with the new image. This is quite straightforward inmost c
 Yet another architecture diagram: 
 <img src="images/blog/gleich-tech-switch_3.png" class="img-fluid">
 
-#### Testing time
-It is time to test the new layout. After another simulated failover:
-<img src="images/blog/second_attempted_failover.png" class="img-fluid">
+##### Google Monitoring Toggle
 
-Now this is looking good, we brought our previous 13 minute failover down to about 3 minutes. For a cost sensitive homelab project,
-this is where we say "good enough." The optimized solution for a personal resume website allows for eloquent hands-off failover into the cloud.
-Due to the cost sensitive nature, one more feature will need to be implemented before this project can called complete.
-After we failover into the cloud, we want to disable the cloud monitoring otherwise we will incur all of those invocation 
-costs on our cloud run service. This is another implementaiton with `google-api-python-client`, and I will leave it to you 
+I also noticed another optimization that is required: google monitoring shouldn't monitor the cloud run service after we failover. These excess requests to the cloud run "serverless" service will end up being costly, with no real benefit. If both my local house goes down as well as us-central-1, perhaps this is an outage I can afford given our low cost tolerance. This is another implementaiton with `google-api-python-client`, and I will leave it to you 
 if you want to see the code:
+
 * [will.gleich.tech](https://github.com/willgleich/gleich.tech)
-* gleich-tech-switch(https://github.com/willgleich/gleich-tech-switch)
+* [gleich-tech-switch](https://github.com/willgleich/gleich-tech-switch)
+
+A quick note here: While this solution makes for a great, cheap homelab solution, 3 minutes of downtime for an enterprise service is often unacceptable. Looking further into this on a enterprise level 
+
+#### Testing time
+
+It is time to test the new layout. After another simulated failover:
+<img src="images/blog/second_attempt_failover.png" class="img-fluid">
+
+Now this is looking better, we brought our previous 13 minute failover down to about 3 minutes. For a cost sensitive homelab project,
+this is where we say "good enough." This optimized solution for a personal resume website allows for eloquent hands-off failover into the cloud in about 3 minutes. 
 
 #### Conclusion
-This exercise highlights an important aspect of designing a new system. 
+This exercise highlights many important aspects of designing a new system. Manual prototyping is an amazing task that could've sped up this implementation. I hope my "tunnel-vision" example of sticking to my original design shined light on how that can be a costly endeavor. Foregoing optimizations that strike you while you are in the weeds with a new system is an exercise in futility, although one must be careful to balance time and optimization especially in the early stages of a project/product. I leave you all with an excerpt from *The Pragmatic Programmer* by Andrew Hunt and David Thomas, which highlights why modeling an unknown system isn't necessarily the best way to approach design.
 
-Prototyping is an essential task that could've sped up this implementation.
-Had this been an enterprise project, developing a prototype or as  
-
-The amount of architectural changes made for a 
-better blog post, but also made for much more work than needed. 
-
-Perhaps the issue originated from my original modeling, but
-as I mentioned before, many of th
+> “10. Tracer Bullets
+>
+>
+> Ready, fire, aim...
+>
+> There are two ways to fire a machine gun in the dark.[5] You can find out exactly where your target is (range, elevation, and azimuth). You can determine the environmental conditions (temperature, humidity, air pressure, wind, and so on). You can determine the precise specifications of the cartridges and bullets you are using, and their interactions with the actual gun you are firing. You can then use tables or a firing computer to calculate the exact bearing and elevation of the barrel. If everything works exactly as specified, your tables are correct, and the environment doesn't change, your bullets should land close to their target.
+>
+> [5] To be pedantic, there are many ways of firing a machine gun in the dark, including closing your eyes and spraying out bullets. But this is an analogy, and we're allowed to take liberties.
+>
+> Or you could use tracer bullets.
+>
+> Tracer bullets are loaded at intervals on the ammo belt alongside regular ammunition. When they're fired, their phosphorus ignites and leaves a pyrotechnic trail from the gun to whatever they hit. If the tracers are hitting the target, then so are the regular bullets.
+>
+> Not surprisingly, tracer bullets are preferred to the labor of calculation. The feedback is immediate, and because they operate in the same environment as the real ammunition, external effects are minimized.
+>
+> The analogy might be violent, but it applies to new projects, particularly when you're building something that hasn't been built before. Like the gunners, you're trying to hit a target in the dark. Because your users have never seen a system like this before, their requirements may be vague. 
+>
+> Because you may be using algorithms, techniques, languages, or libraries you aren't familiar with, you face a large number of unknowns. And because projects take time to complete, you can pretty much guarantee the environment you're working in will change before you're done.
+>
+> The classic response is to specify the system to death. Produce reams of paper itemizing every requirement, tying down every unknown, and constraining the environment. Fire the gun using dead reckoning. One big calculation up front, then shoot and hope.
+>
+> Pragmatic Programmers, however, tend to prefer using tracer bullets.
+>
+> Code That Glows in the Dark
+>
+>
+> Tracer bullets work because they operate in the same environment and under the same constraints as the real bullets. They get to the target fast, so the gunner gets immediate feedback. And from a practical standpoint they're a relatively cheap solution.
+>
+> To get the same effect in code, we're looking for something that gets us from a requirement to some aspect of the final system quickly, visibly, and repeatably."
+>
+> Excerpt From: Hunt, Andrew;Thomas, David. “The Pragmatic Programmer: From Journeyman to Master.” Apple Books. 
