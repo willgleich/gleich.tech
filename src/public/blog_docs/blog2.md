@@ -84,7 +84,7 @@ I did some initial tests granting function invoker access to allUsers and allAut
 members of gcp - when I granted access to allUsers, google monitoring HTTP could obviously trigger. When I granted access to 
 allAuthorizedUsers google monitoring wouldn't trigger. This led me to believe that http webhooks on google monitoring do 
 not actually use a GCP IAM service account. That wasn't a implementation concern I was anticipating, however sometimes
-you need to pivot.
+you need to pivot. Opening up my google function to the world and handling basic authentication on the function level seemed like the wrong solution.
 
 #### Events
 The next logical step for testing this functionality was to look at a queue based trigger. I wanted to integrate closely
