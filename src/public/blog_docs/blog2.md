@@ -98,7 +98,7 @@ All of this was as straightforward as I would've expected. The good news is, I h
 With our new pubsub topic trigger, we are ready to test actual performance! Here is the following timeline of events on Oct 2nd:
 
 * 17:08:09 - Triggered Failure: `k scale deploy -n resume resume --replicas=0` 
-* 17:10:46 - Google Monitoring Alert and Published Message at
+* 17:10:46 - Google Monitoring Alert and Published Message
 * Google Domain Mapping Status (note below is UTC vs MST):
 
     ```
