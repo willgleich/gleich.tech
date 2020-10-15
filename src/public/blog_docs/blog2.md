@@ -169,41 +169,30 @@ A quick note here: While this solution makes for a great, cheap homelab solution
 
 It is time to test the new layout. After another simulated failover:
 <img src="images/blog/second_attempt_failover.jpeg" class="img-fluid">
-
 Now this is looking better, we brought our previous 13 minute failover down to about 3 minutes. For a cost sensitive homelab project,
 this is where we say "good enough." This optimized solution for a personal resume website allows for eloquent hands-off failover into the cloud in about 3 minutes. 
 
 #### Conclusion
 This exercise highlights many important aspects of designing a new system. Manual prototyping is an amazing task that could've sped up this implementation. I hope my "tunnel-vision" example of sticking to my original design shined light on how that can be a costly endeavor. Foregoing optimizations that strike you while you are in the weeds with a new system is an exercise in futility, although one must be careful to balance time and optimization especially in the early stages of a project/product. I leave you all with an excerpt from *The Pragmatic Programmer* by Andrew Hunt and David Thomas, which highlights why modeling an unknown system isn't necessarily the best way to approach design.
 
-> “10. Tracer Bullets
->
->
-> Ready, fire, aim...
->
-> There are two ways to fire a machine gun in the dark.[5] You can find out exactly where your target is (range, elevation, and azimuth). You can determine the environmental conditions (temperature, humidity, air pressure, wind, and so on). You can determine the precise specifications of the cartridges and bullets you are using, and their interactions with the actual gun you are firing. You can then use tables or a firing computer to calculate the exact bearing and elevation of the barrel. If everything works exactly as specified, your tables are correct, and the environment doesn't change, your bullets should land close to their target.
->
-> [5] To be pedantic, there are many ways of firing a machine gun in the dark, including closing your eyes and spraying out bullets. But this is an analogy, and we're allowed to take liberties.
->
-> Or you could use tracer bullets.
->
-> Tracer bullets are loaded at intervals on the ammo belt alongside regular ammunition. When they're fired, their phosphorus ignites and leaves a pyrotechnic trail from the gun to whatever they hit. If the tracers are hitting the target, then so are the regular bullets.
->
-> Not surprisingly, tracer bullets are preferred to the labor of calculation. The feedback is immediate, and because they operate in the same environment as the real ammunition, external effects are minimized.
->
-> The analogy might be violent, but it applies to new projects, particularly when you're building something that hasn't been built before. Like the gunners, you're trying to hit a target in the dark. Because your users have never seen a system like this before, their requirements may be vague. 
->
-> Because you may be using algorithms, techniques, languages, or libraries you aren't familiar with, you face a large number of unknowns. And because projects take time to complete, you can pretty much guarantee the environment you're working in will change before you're done.
->
-> The classic response is to specify the system to death. Produce reams of paper itemizing every requirement, tying down every unknown, and constraining the environment. Fire the gun using dead reckoning. One big calculation up front, then shoot and hope.
->
-> Pragmatic Programmers, however, tend to prefer using tracer bullets.
->
-> Code That Glows in the Dark
->
->
-> Tracer bullets work because they operate in the same environment and under the same constraints as the real bullets. They get to the target fast, so the gunner gets immediate feedback. And from a practical standpoint they're a relatively cheap solution.
->
-> To get the same effect in code, we're looking for something that gets us from a requirement to some aspect of the final system quickly, visibly, and repeatably."
->
-> Excerpt From: Hunt, Andrew;Thomas, David. “The Pragmatic Programmer: From Journeyman to Master.” 
+<div class="card my-4">
+<div class="card-body">
+<blockquote>
+  <p>10. Tracer Bullets</p>
+  <p>Ready, fire, aim…</p>
+  <p>There are two ways to fire a machine gun in the dark. You can find out exactly where your target is (range, elevation, and azimuth). You can determine the environmental conditions (temperature, humidity, air pressure, wind, and so on). You can determine the precise specifications of the cartridges and bullets you are using, and their interactions with the actual gun you are firing. You can then use tables or a firing computer to calculate the exact bearing and elevation of the barrel. If everything works exactly as specified, your tables are correct, and the environment doesn't change, your bullets should land close to their target.</p>
+  <p>To be pedantic, there are many ways of firing a machine gun in the dark, including closing your eyes and spraying out bullets. But this is an analogy, and we're allowed to take liberties.</p>
+  <p>Or you could use tracer bullets.</p>
+  <p>Tracer bullets are loaded at intervals on the ammo belt alongside regular ammunition. When they're fired, their phosphorus ignites and leaves a pyrotechnic trail from the gun to whatever they hit. If the tracers are hitting the target, then so are the regular bullets.</p>
+  <p>Not surprisingly, tracer bullets are preferred to the labor of calculation. The feedback is immediate, and because they operate in the same environment as the real ammunition, external effects are minimized.</p>
+  <p>The analogy might be violent, but it applies to new projects, particularly when you're building something that hasn't been built before. Like the gunners, you're trying to hit a target in the dark. Because your users have never seen a system like this before, their requirements may be vague. </p>
+  <p>Because you may be using algorithms, techniques, languages, or libraries you aren't familiar with, you face a large number of unknowns. And because projects take time to complete, you can pretty much guarantee the environment you're working in will change before you're done.</p>
+  <p>The classic response is to specify the system to death. Produce reams of paper itemizing every requirement, tying down every unknown, and constraining the environment. Fire the gun using dead reckoning. One big calculation up front, then shoot and hope.</p>
+  <p>Pragmatic Programmers, however, tend to prefer using tracer bullets.</p>
+  <p>Code That Glows in the Dark</p>
+  <p>Tracer bullets work because they operate in the same environment and under the same constraints as the real bullets. They get to the target fast, so the gunner gets immediate feedback. And from a practical standpoint they're a relatively cheap solution.</p>
+  <p>To get the same effect in code, we're looking for something that gets us from a requirement to some aspect of the final system quickly, visibly, and repeatably.</p>
+  <footer class="blockquote-footer">Excerpt From: Hunt, Andrew;Thomas, David <cite title="Source Title">“The Pragmatic Programmer: From Journeyman to Master.”</cite></footer>
+</blockquote>
+</div>
+</div>
