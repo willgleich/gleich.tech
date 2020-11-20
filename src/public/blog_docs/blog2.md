@@ -128,7 +128,7 @@ the Ready status of the domain routing and the service actually coming up descri
 During the previous parts of this blog I intentionally was following the architecture design that I created initially, sometimes referred to as tunnel vision.
 I tried to deviate as little as possible, both to create a targeted blog post, as well as emphasize the most important part of designing a new system: continuous improvement.
 When I created my initial architecture flow I had limited knowledge of how these integrations would work. I had an idea, but I didn't know exactly how the pieces fit together.
-This is shown by the two changes I had made:
+This is shown by the changes I had made:
 
 * Scrapping serverless in favor of google functions deploy
 * Scrapping HTTP trigger in favor of PubSub Trigger

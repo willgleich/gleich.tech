@@ -12,6 +12,7 @@
   "dependencies": {
     "ejs": "*",
     "express": "*",
+    "morgan": "^1.10.0",
     "showdown": "^1.9.1"
   }
 }
