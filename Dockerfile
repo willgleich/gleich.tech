@@ -1,7 +1,7 @@
 FROM node
-
-# Create app directory
 WORKDIR /usr/src/app
+RUN chown -R node .
+USER node
 
 # Install app dependencies
 COPY src/ .
