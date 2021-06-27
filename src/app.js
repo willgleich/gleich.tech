@@ -48,12 +48,12 @@ async function get_blog_data() {
         {
             title: "Homelab Antics Part 1",
             body: blog1_data.body,
-            date: blog1_data.date
+            date: "09-05-2020"
         },
         {
             title: "Cloud Failover",
             body: blog2_data.body,
-            date: blog2_data.date
+            date: "10-14-2020"
         }
     ]
 }
