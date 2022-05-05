@@ -18,5 +18,7 @@ COPY --from=Builder /usr/src/app/public /usr/share/nginx/html/
 
 ADD default.conf  /etc/nginx/conf.d/
 
+EXPOSE 80
+
 RUN chown -R nginx /usr/share/nginx/html/
 
