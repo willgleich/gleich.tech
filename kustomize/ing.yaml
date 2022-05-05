@@ -16,4 +16,4 @@ spec:
           - path: /
             backend:
               serviceName: resume
-              servicePort: 8080
+              servicePort: 80
