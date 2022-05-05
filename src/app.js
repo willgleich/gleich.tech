@@ -10,53 +10,10 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 app.set('views', path.join(__dirname, '/views'));
 app.use(morgan('combined'));
-const { promisify } = require('util');
-const readFile = promisify(fs.readFile);
-const stat = promisify(fs.stat);
+const blog = require('./blog.js');
 
 
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
 
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
-
- async function get_file_data(filename) {
-     const contents = await readFile(path.join(__dirname, './public/blog_docs/' + filename),'utf8');
-     const showdown = require('showdown'),
-         converter = new showdown.Converter(),
-         html = await converter.makeHtml(contents);
-     const file_stat = await stat(path.join(__dirname, './public/blog_docs/' + filename),'utf8');
-     return {
-         body: html,
-         date: formatDate(file_stat.mtime)
-     };
-}
-
-async function get_blog_data() {
-    blog1_data = await get_file_data("blog1.md");
-    blog2_data = await get_file_data("blog2.md");
-    return blog_data = [
-        {
-            title: "Homelab Antics Part 1",
-            body: blog1_data.body,
-            date: "09-05-2020"
-        },
-        {
-            title: "Cloud Failover",
-            body: blog2_data.body,
-            date: "10-14-2020"
-        }
-    ]
-}
 
 
 app.get('/', function(req, res){
@@ -69,7 +26,7 @@ app.get('/index', function(req, res){
 
 
 app.get('/blog', async function(req, res){
-    let blog_data = await get_blog_data();
+    let blog_data = await blog.get_blog_data();
     res.render('blog', {data:blog_data.reverse()});
 });
 
