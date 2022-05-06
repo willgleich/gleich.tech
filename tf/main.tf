@@ -1,18 +1,33 @@
 terraform {
-  backend "consul" {
-    address = "consul.gleich.tech"
-    scheme  = "https"
-    path    = "tf/gke/resume-monitor"
+  backend "gcs" {
+    bucket = "gleich-infra"
+    prefix =  "tf/gke/resume"
   }
 }
 
 provider "google" {
-  credentials = "main.json"
-
   project = "main-285019"
   region  = "us-west3"
 }
 
+resource "google_storage_bucket" "static-site" {
+  name          = "test-site.gleich.tech"
+  location      = "US"
+  force_destroy = true
+
+  uniform_bucket_level_access = false
+
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+  #  cors {
+  #    origin          = ["http://image-store.com"]
+  #    method          = ["GET", "HEAD", "PUT", "POST", "DELETE"]
+  #    response_header = ["*"]
+  #    max_age_seconds = 3600
+  #  }
+}
 
 resource "google_monitoring_uptime_check_config" "https" {
     display_name     = "will.gleich.tech"
