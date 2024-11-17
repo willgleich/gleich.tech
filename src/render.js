@@ -18,9 +18,39 @@ async function render(filename) {
             return;
         default:
             var render_data = {}
-        case "blog":
+            break
+        case "blog_home":
             var blog_data = await blog.get_blog_data();
             var render_data = {"data":blog_data.reverse()}
+            break
+        case "blog_post":
+            var blog_data = await blog.get_blog_data();
+            for (const blog_d of blog_data) {
+                var render_data = {"data":blog_d}
+                try {
+                    //create output directory
+                    await mkdir("dist/blog", { recursive: true });
+
+                    //render ejs template to html string
+                    //pass pageModel in to render content
+                    const html = await ejs
+                        .renderFile(filename, render_data)
+                        .then((output) => output);
+                    //create file and write html
+                    out_file = blog_d.slug
+                    if (file_name === "index") {
+                        var output_file = "dist/blog/" + out_file + ".html"
+                    }
+                    else {
+                        var output_file = "dist/blog/" + out_file
+                    }
+                    console.log(filename)
+                    await writeFile(output_file, html);
+                } catch (error) {
+                    console.log("test")
+                    console.log(error);
+                }
+            }
     }
     // file_name = file_path.
     try {

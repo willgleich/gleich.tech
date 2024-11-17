@@ -12,10 +12,9 @@
 
       <!-- Post Content Column -->
       <div class="col-lg-8">
-      <% for(var i=0; i < data.length; i++) { %>
 
         <!-- Title -->
-        <h1 class="mt-4"><%=data[i].title %></h1>
+        <h1 class="mt-4"><%=data.title %></h1>
 
         <!-- Author -->
 <!--        <p class="lead">-->
@@ -26,7 +25,7 @@
         <hr>
 
         <!-- Date/Time -->
-        <p>Posted on <%= data[i].date %></p>
+        <p>Posted on <%= data.date %></p>
 
 <!--        <hr>-->
 
@@ -36,9 +35,8 @@
         <hr>
 
         <!-- Post Content -->
-        <%- data[i].body %>
+        <%- data.body %>
             <hr class="endblog">
-          <% } %>
 
 
 <!--        <hr>-->

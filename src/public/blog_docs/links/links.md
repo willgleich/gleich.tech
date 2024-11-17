@@ -5,4 +5,5 @@ Tools
 * [dive](https://github.com/wagoodman/dive)
 * [iftop] (https://linux.die.net/man/8/iftop)
 * strace
-* 
+* kyanos net monitori https://github.com/hengyoush/kyanos
+*  vs trafshow

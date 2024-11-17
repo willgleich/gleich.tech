@@ -40,6 +40,16 @@ app.get('/aboutme', function(req, res){
     res.render('aboutme')
 });
 
+app.get('/blog/:blogSlug', async function(req, res){
+    var blog_datas = await blog.get_blog_data()
+    for (var b of blog_datas){
+        if (b.slug === req.params.blogSlug) {
+            break
+        }
+    }
+    res.render('blog_post', {data:b});
+});
+
 app.listen(8080, function() {
     console.log('App listening on port 8080!');
 });

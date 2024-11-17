@@ -40,11 +40,13 @@ async function get_blog_data() {
     return blog_data = [
         {
             title: "Homelab Antics Part 1",
+            slug: "homelab-1",
             body: blog1_data.body,
             date: "09-05-2020"
         },
         {
             title: "Cloud Failover",
+            slug: "cloud-failover",
             body: blog2_data.body,
             date: "10-14-2020"
         }
