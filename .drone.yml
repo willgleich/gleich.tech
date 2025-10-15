@@ -11,6 +11,21 @@ globals:
       from_secret: docker_password
 
 steps:
+  - name: test_sleep_with_secrets
+    image: alpine:latest
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+    commands:
+      - echo "Testing sleep task with Docker secrets imported"
+      - echo "Docker username is set: $DOCKER_USERNAME"
+      - echo "Docker password length:" $(echo -n "$DOCKER_PASSWORD" | wc -c)
+      - echo "Sleeping for 10 seconds..."
+      - sleep 10
+      - echo "Sleep complete!"
+
   - name: Build_Docker_Image # building the API docker image
     image: plugins/docker
     settings:
