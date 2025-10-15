@@ -26,8 +26,13 @@ app.get('/index', function(req, res){
 
 
 app.get('/blog', async function(req, res){
+    let latest_post = await blog.get_latest_post();
+    res.render('blog_home', {data:latest_post});
+});
+
+app.get('/blog/archive', async function(req, res){
     let blog_data = await blog.get_blog_data();
-    res.render('blog', {data:blog_data.reverse()});
+    res.render('blog_toc', {data:blog_data});
 });
 
 

@@ -1,0 +1,81 @@
+<%- include ('base.ejs'); %>
+
+<br>
+<!-- Page Content -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+        <h2>Blog Archive</h2>
+        <a href="/blog" class="btn btn-outline-primary btn-sm">Latest Post</a>
+      </div>
+
+      <hr>
+
+      <!-- Table of Contents -->
+      <div class="blog-toc">
+        <% for(var i=0; i < data.length; i++) { %>
+          <div class="toc-entry">
+            <div class="toc-date">
+              <small class="text-muted"><%= data[i].date %></small>
+            </div>
+            <div class="toc-title">
+              <h4><a href="/blog/<%= data[i].slug %>"><%= data[i].title %></a></h4>
+            </div>
+          </div>
+          <% if(i < data.length - 1) { %>
+            <hr class="toc-divider">
+          <% } %>
+        <% } %>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .blog-toc {
+    margin-top: 2rem;
+  }
+
+  .toc-entry {
+    padding: 1.5rem 0;
+    transition: transform 0.2s ease;
+  }
+
+  .toc-entry:hover {
+    transform: translateX(10px);
+  }
+
+  .toc-date {
+    margin-bottom: 0.5rem;
+  }
+
+  .toc-title h4 {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .toc-title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .toc-title a:hover {
+    color: #007bff;
+  }
+
+  .toc-divider {
+    border: 0;
+    border-top: 1px solid #e9ecef;
+    margin: 0;
+  }
+
+  hr {
+    border: 1px solid lightgray;
+  }
+</style>

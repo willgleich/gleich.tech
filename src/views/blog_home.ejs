@@ -12,35 +12,32 @@
 
       <!-- Post Content Column -->
       <div class="col-lg-8">
-      <% for(var i=0; i < data.length; i++) { %>
+
+        <!-- Header with Archive Link -->
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+          <h2>Latest Post</h2>
+          <a href="/blog/archive" class="btn btn-outline-primary btn-sm">View All Posts</a>
+        </div>
+
+        <hr>
 
         <!-- Title -->
-        <h4 class="mt-4">
-<!--        TODO: MAKE THIS A LINK    -->
-            <a href="blog/<%= data[i].slug %>"><%=data[i].title %> <%= %></a> </h4>
-
-        <!-- Author -->
-<!--        <p class="lead">-->
-<!--          by-->
-<!--          <a href="#">Start Bootstrap</a>-->
-<!--        </p>-->
-
-<!--        <hr>-->
+        <h1 class="mt-4"><%= data.title %></h1>
 
         <!-- Date/Time -->
-        <p>Posted on <%= data[i].date %></p>
-
-<!--        <hr>-->
-
-        <!-- Preview Image -->
-<!--        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">-->
+        <p class="text-muted">Posted on <%= data.date %></p>
 
         <hr>
 
         <!-- Post Content -->
-<!--        <%- data[i].body %>-->
-<!--            <hr class="endblog">-->
-<!--          <% } %>-->
+        <%- data.body %>
+
+        <hr class="endblog">
+
+        <!-- Archive Link at Bottom -->
+        <div class="text-center my-4">
+          <a href="/blog/archive" class="btn btn-primary">View All Posts</a>
+        </div>
 
 
 <!--        <hr>-->

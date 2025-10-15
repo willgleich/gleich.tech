@@ -20,8 +20,12 @@ async function render(filename) {
             var render_data = {}
             break
         case "blog_home":
+            var latest_post = await blog.get_latest_post();
+            var render_data = {"data":latest_post}
+            break
+        case "blog_toc":
             var blog_data = await blog.get_blog_data();
-            var render_data = {"data":blog_data.reverse()}
+            var render_data = {"data":blog_data}
             break
         case "blog_post":
             var blog_data = await blog.get_blog_data();
