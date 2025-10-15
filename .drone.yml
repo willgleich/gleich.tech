@@ -20,8 +20,7 @@ steps:
         from_secret: docker_password
     commands:
       - echo "Testing sleep task with Docker secrets imported"
-      - echo "Docker username is set: $DOCKER_USERNAME"
-      - echo "Docker password length:" $(echo -n "$DOCKER_PASSWORD" | wc -c)
+      - echo "Docker username is set:$DOCKER_USERNAME"
       - echo "Sleeping for 10 seconds..."
       - sleep 10
       - echo "Sleep complete!"
