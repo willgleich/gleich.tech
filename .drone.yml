@@ -34,10 +34,10 @@ steps:
       # registry: hub.docker.com
       # dockerfile: /drone/src/.
       tags: ["${DRONE_COMMIT_SHA:0:7}", "latest"]
-      when:
-        target:
-          exclude:
-            - production
+    when:
+      target:
+        exclude:
+          - production
 
   - name: kube_deploy_dev # building the API docker image
     image: gcr.io/cloud-builders/kubectl
