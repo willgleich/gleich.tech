@@ -26,7 +26,7 @@ async function render(filename) {
             // New blog home page with card grid - this becomes the main /blog page
             var posts = await blog.get_blog_data();
             var render_data = {"posts": posts.reverse()}
-            var output_file = "dist/blog.html"
+            var output_file = "dist/blog/index.html"
             break;
         case "blog_post":
             // Skip blog_post template - will render individual posts separately
@@ -60,6 +60,13 @@ async function render(filename) {
                 output_file = "dist/" + file_name
             }
         }
+
+        // Create parent directory if needed (for nested paths like blog/index.html)
+        const outputDir = path.dirname(output_file);
+        if (outputDir !== 'dist') {
+            await mkdir(outputDir, { recursive: true });
+        }
+
         console.log("Rendered: " + filename + " -> " + output_file)
         await writeFile(output_file, html);
     } catch (error) {
