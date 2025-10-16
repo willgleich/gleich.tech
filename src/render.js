@@ -17,20 +17,28 @@ async function render(filename) {
         case "base":
             return;
         case "blog":
-            // Legacy blog page
+            // Legacy blog page - rename to blog-old to avoid conflict with blog directory
             var blog_data = await blog.get_blog_data();
             var render_data = {"data":blog_data.reverse()}
+            var output_file = "dist/blog-old"
             break;
         case "blog_home":
-            // New blog home page with card grid
+            // New blog home page with card grid - this becomes the main /blog page
             var posts = await blog.get_blog_data();
             var render_data = {"posts": posts.reverse()}
+            var output_file = "dist/blog.html"
             break;
         case "blog_post":
             // Skip blog_post template - will render individual posts separately
             return;
         default:
             var render_data = {}
+            // Determine output file
+            if (file_name === "index") {
+                var output_file = "dist/" + file_name + ".html"
+            } else {
+                var output_file = "dist/" + file_name
+            }
     }
 
     try {
@@ -44,11 +52,13 @@ async function render(filename) {
             .then((output) => output);
 
         //create file and write html
-        if (file_name === "index") {
-            var output_file = "dist/" + file_name + ".html"
-        }
-        else {
-            var output_file = "dist/" + file_name
+        // Use output_file if already set in switch, otherwise use default logic
+        if (!output_file) {
+            if (file_name === "index") {
+                output_file = "dist/" + file_name + ".html"
+            } else {
+                output_file = "dist/" + file_name
+            }
         }
         console.log("Rendered: " + filename + " -> " + output_file)
         await writeFile(output_file, html);
