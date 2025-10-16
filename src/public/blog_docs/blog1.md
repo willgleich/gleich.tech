@@ -16,7 +16,7 @@ my gaming PC is not enough to prevent service impacts, especially regarding DHCP
 #### The Gateway to Wonderland
 After talking through my homelab desires with [one of my colleagues at the time](https://github.com/backcountryinfosec) he recommended pfSense - the solution was identified!
 
-<a href="https://www.pfsense.org/"><img src="images/blog/pfsense.jpg" height="300px" class="img-fluid"></a>
+<a href="https://www.pfsense.org/"><img src="/images/blog/pfsense.jpg" height="300px" class="img-fluid"></a>
 
 pfSense is a router/firewall operating system that is commonly used by SOHO (Small Office / Home Office) deployments, and also works great as a virtual machine.
 
@@ -32,10 +32,10 @@ This VM needs custom networking with at least 2 network adapaters -
  below are screenshots of working configuration of the WAN and LAN interfaces
  
 ###### WAN
- <img src="images/blog/vbox_wan.png" class="img-fluid" height="100px">
+ <img src="/images/blog/vbox_wan.png" class="img-fluid" height="100px">
  
 ###### LAN
-  <img src="images/blog/vbox_lan.png" class="img-fluid" height="100px">
+  <img src="/images/blog/vbox_lan.png" class="img-fluid" height="100px">
   
 Take note of the bridged WAN interface, this will use your Desktop's ethernet adapter to mimic another computer on the network. 
 I also had to utilize the paravirtual network adapters to get things working correctly for this demo.
