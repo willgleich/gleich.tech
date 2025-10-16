@@ -1,0 +1,117 @@
+<%- include ('base.ejs'); %>
+
+<br>
+
+<!-- Blog Header -->
+<div class="container">
+  <div class="row mb-4">
+    <div class="col-lg-12 text-center">
+      <h1 class="mt-4 mb-3">Blog</h1>
+      <p class="lead">Thoughts on technology, homelab adventures, and cloud infrastructure</p>
+    </div>
+  </div>
+</div>
+
+<!-- Blog Posts Grid -->
+<div class="container mb-5">
+  <div class="row">
+    <% for(var i=0; i < posts.length; i++) { %>
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100 blog-card">
+        <!-- Image Placeholder - TODO: Add blog post preview images -->
+        <!-- Usage: Add a 'thumbnail' field to blog metadata pointing to /images/blog/[post-slug]-thumb.jpg -->
+        <div class="card-img-top-placeholder">
+          <% if (posts[i].thumbnail) { %>
+            <img class="card-img-top" src="<%= posts[i].thumbnail %>" alt="<%= posts[i].title %>">
+          <% } else { %>
+            <!-- Placeholder icon until images are added -->
+            <div class="blog-icon-placeholder">
+              <i class="<%= posts[i].icon || 'fas fa-laptop-code' %> fa-4x"></i>
+            </div>
+          <% } %>
+        </div>
+
+        <div class="card-body d-flex flex-column">
+          <h4 class="card-title"><%= posts[i].title %></h4>
+          <p class="text-muted small">
+            <i class="far fa-calendar-alt"></i> <%= posts[i].date %>
+          </p>
+
+          <!-- Excerpt/Summary -->
+          <p class="card-text">
+            <% if (posts[i].excerpt) { %>
+              <%= posts[i].excerpt %>
+            <% } else { %>
+              Click to read this post about <%= posts[i].title.toLowerCase() %>
+            <% } %>
+          </p>
+
+          <a href="/blog/<%= posts[i].slug %>" class="btn btn-primary mt-auto">
+            Read More <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Optional: Tags/Categories -->
+        <% if (posts[i].tags && posts[i].tags.length > 0) { %>
+        <div class="card-footer">
+          <small class="text-muted">
+            <% posts[i].tags.forEach(function(tag, index) { %>
+              <span class="badge badge-secondary"><%= tag %></span>
+            <% }); %>
+          </small>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<style>
+  .blog-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(0,0,0,.125);
+  }
+
+  .blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .blog-icon-placeholder {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-img-top-placeholder img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .blog-card .card-body {
+    padding: 1.5rem;
+  }
+
+  .blog-card .btn-primary {
+    background-color: #667eea;
+    border-color: #667eea;
+  }
+
+  .blog-card .btn-primary:hover {
+    background-color: #764ba2;
+    border-color: #764ba2;
+  }
+
+  .badge-secondary {
+    margin-right: 5px;
+  }
+</style>
+
+<!-- Font Awesome for Icons (if not already included) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

@@ -1,0 +1,214 @@
+<%- include ('base.ejs'); %>
+
+<br>
+
+<!-- Blog Navigation Header -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/index">Home</a></li>
+          <li class="breadcrumb-item"><a href="/blog">Blog</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= post.title %></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+
+    <!-- Post Content Column -->
+    <div class="col-lg-8">
+
+      <!-- Hero Image Placeholder -->
+      <!-- TODO: Add hero images for blog posts -->
+      <!-- Usage: Add a 'heroImage' field to blog metadata pointing to /images/blog/[post-slug]-hero.jpg -->
+      <% if (post.heroImage) { %>
+        <img class="img-fluid rounded mb-4" src="<%= post.heroImage %>" alt="<%= post.title %>">
+      <% } else { %>
+        <!-- Placeholder for hero image -->
+        <div class="hero-image-placeholder mb-4">
+          <i class="<%= post.icon || 'fas fa-laptop-code' %> fa-5x"></i>
+        </div>
+      <% } %>
+
+      <!-- Title -->
+      <h1 class="mt-4"><%= post.title %></h1>
+
+      <!-- Date/Time and Metadata -->
+      <p class="text-muted">
+        <i class="far fa-calendar-alt"></i> Posted on <%= post.date %>
+        <% if (post.readTime) { %>
+          <span class="mx-2">•</span>
+          <i class="far fa-clock"></i> <%= post.readTime %> min read
+        <% } %>
+      </p>
+
+      <!-- Tags -->
+      <% if (post.tags && post.tags.length > 0) { %>
+      <div class="mb-3">
+        <% post.tags.forEach(function(tag) { %>
+          <span class="badge badge-primary tag-badge"><%= tag %></span>
+        <% }); %>
+      </div>
+      <% } %>
+
+      <hr>
+
+      <!-- Post Content -->
+      <div class="blog-post-content">
+        <%- post.body %>
+      </div>
+
+      <hr class="my-4">
+
+      <!-- Navigation Buttons -->
+      <div class="row mb-5">
+        <div class="col-6">
+          <% if (previousPost) { %>
+            <a href="/blog/<%= previousPost.slug %>" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left"></i> Previous Post
+            </a>
+          <% } %>
+        </div>
+        <div class="col-6 text-right">
+          <% if (nextPost) { %>
+            <a href="/blog/<%= nextPost.slug %>" class="btn btn-outline-secondary">
+              Next Post <i class="fas fa-arrow-right"></i>
+            </a>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Back to Blog Home -->
+      <div class="text-center mb-5">
+        <a href="/blog" class="btn btn-primary btn-lg">
+          <i class="fas fa-th"></i> Back to All Posts
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+
+      <!-- About/Bio Widget -->
+      <div class="card my-4">
+        <h5 class="card-header">About</h5>
+        <div class="card-body">
+          <p class="small">
+            Personal blog covering homelab projects, cloud infrastructure,
+            and technology experiments. Written by Will Gleich.
+          </p>
+          <a href="/aboutme" class="btn btn-sm btn-outline-primary">Learn More</a>
+        </div>
+      </div>
+
+      <!-- Recent Posts Widget -->
+      <% if (recentPosts && recentPosts.length > 0) { %>
+      <div class="card my-4">
+        <h5 class="card-header">Recent Posts</h5>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0">
+            <% recentPosts.forEach(function(recentPost) { %>
+              <li class="mb-2">
+                <a href="/blog/<%= recentPost.slug %>"><%= recentPost.title %></a>
+                <br>
+                <small class="text-muted"><%= recentPost.date %></small>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+      <% } %>
+
+      <!-- Tags Cloud Widget (Optional) -->
+      <% if (allTags && allTags.length > 0) { %>
+      <div class="card my-4">
+        <h5 class="card-header">Topics</h5>
+        <div class="card-body">
+          <% allTags.forEach(function(tag) { %>
+            <span class="badge badge-secondary mb-2"><%= tag %></span>
+          <% }); %>
+        </div>
+      </div>
+      <% } %>
+
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<style>
+  .hero-image-placeholder {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+    border-radius: 0.25rem;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .blog-post-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+
+  .blog-post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .blog-post-content pre {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+  }
+
+  .blog-post-content code {
+    background-color: #f4f4f4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+  }
+
+  .blog-post-content pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .tag-badge {
+    margin-right: 5px;
+    font-size: 0.9rem;
+  }
+
+  .breadcrumb {
+    background-color: #f8f9fa;
+  }
+
+  .card-header {
+    background-color: #667eea;
+    color: white;
+    font-weight: bold;
+  }
+
+  hr {
+    border: 1px solid lightgray;
+  }
+</style>
+
+<!-- Font Awesome for Icons (if not already included) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
