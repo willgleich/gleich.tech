@@ -19,7 +19,7 @@ The project started with these goals:
     * Automatic deployment into the cloud
 * Secondary Goal: Learning about google functions, iam and api
 #### Architecture
-<img src="images/blog/gleich-tech-switch_1.png" height="150px" class="img-fluid">
+<img src="/images/blog/gleich-tech-switch_1.png" height="150px" class="img-fluid">
 
 #### Python Client
 The work was cut out for me, it was time to start digging into coding and wiring up deployment of the newly minted
@@ -115,7 +115,7 @@ With our new pubsub topic trigger, we are ready to test actual performance! Here
 * 17:24:35 Google Monitoring Alert Resolution
 
 I also have a screen shot of the locust.io load testing I initiated before triggering the fail over:
-<img src="images/blog/first_attempt_failover.png" class="img-fluid">
+<img src="/images/blog/first_attempt_failover.png" class="img-fluid">
 
 This puts failure right around 17:08:30 and resolution at 17:21:39, well things are a little off from the google monitoring timing,
 but some error is to be expected in these tools. The good news is we did it,  with a simulated fail over google monitoring 
@@ -138,7 +138,7 @@ Now that we have a MVP created, its time to dive in a few improvements identifie
 
 
 Here is the current status of the architecture:
-<img src="images/blog/gleich-tech-switch_2.png" class="img-fluid">
+<img src="/images/blog/gleich-tech-switch_2.png" class="img-fluid">
 
 
 
@@ -153,7 +153,7 @@ keep my cloud run deployed permanently with no way to access it. I do not get bi
 This architectural shift would require that production CI/CD deployments also push images to both gcr.io and refresh
 the cloud run service with the new image. This is quite straightforward inmost ci/cd platforms and was easy to implement with drone.io.
 Yet another architecture diagram: 
-<img src="images/blog/gleich-tech-switch_3.png" class="img-fluid">
+<img src="/images/blog/gleich-tech-switch_3.png" class="img-fluid">
 
 ##### Google Monitoring Toggle
 
@@ -168,7 +168,7 @@ A quick note here: While this solution makes for a great, cheap homelab solution
 #### Testing time
 
 It is time to test the new layout. After another simulated failover:
-<img src="images/blog/second_attempt_failover.jpeg" class="img-fluid">
+<img src="/images/blog/second_attempt_failover.jpeg" class="img-fluid">
 Now this is looking better, we brought our previous 13 minute failover down to about 3 minutes. For a cost sensitive homelab project,
 this is where we say "good enough." This optimized solution for a personal resume website allows for eloquent hands-off failover into the cloud in about 3 minutes. 
 
